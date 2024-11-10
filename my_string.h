@@ -32,7 +32,7 @@ int my_strcmp  (const char *str1, const char *str2);
 int my_strcmp2 (const char *str1, const char *str2);
 
 /* additional functions */
-char* my_strrev(char *str);
-char* my_strccase(char *str);
+char* my_strrev(char* str);
+char* my_strccase(char* str);
 
-char* my_strtok(char *str, const char *delim);  // Declaration for my_strtok
+char* my_strtok(char* str, const char* delim);

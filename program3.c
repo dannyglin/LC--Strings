@@ -3,47 +3,48 @@
 /* Purpose   : This C-file reads command-line arguments, parses integers */
 /*             and strings, and outputs them as specified.               */
 /*                                                                       */
-/* Author(s) : assistant                                                 */
+/* Author(s) : Danny Lin                                                 */
 /*************************************************************************/
 
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_ARGS 10
+#define MAX_STR_LEN 250
+
 int main(int argc, char** argv) {
-    int intArray[10];       // Array to store integer arguments
-    int intCount = 0;       // Counter to keep track of the number of integers
-    char combinedString[250] = ""; // String to store combined non-integer arguments
-    int temp;               // Temporary variable for integer conversion
+    int integers[MAX_ARGS];     // Array to store integer arguments
+    int int_count = 0;          // Counter to keep track of the number of integers
+    char result_str[MAX_STR_LEN] = ""; // String to store combined non-integer arguments
+    int num;                    // Temporary variable for integer conversion
 
     // Loop through each argument (skip argv[0], which is the program name)
+    char *program_name = argv[0];
+    if (strncmp(program_name, "./", 2) == 0) {
+        program_name += 2;  // Skip "./" characters
+    }
+    strcpy(result_str, program_name);
+
+    // Process remaining arguments
     for (int i = 1; i < argc; i++) {
-        // Check if the argument is an integer using sscanf
-        if (sscanf(argv[i], "%d", &temp) == 1) {
-            // If sscanf finds an integer, store it in intArray
-            intArray[intCount++] = temp;
+        // Try to convert to integer
+        if (sscanf(argv[i], "%d", &num) == 1) {
+            // Store integer
+            integers[int_count++] = num;
         } else {
-            // For non-integer arguments, append to combinedString
-            if (i == 1 && strncmp(argv[i], "./", 2) == 0) {
-                // Remove "./" from the first argument if present
-                strcat(combinedString, argv[i] + 2);
-            } else {
-                // Append argument to combinedString as-is
-                strcat(combinedString, argv[i]);
-            }
-            // Add a space after each argument except the last one
-            if (i < argc - 1) {
-                strcat(combinedString, " ");
-            }
+            // Handle string
+            strcat(result_str, " ");
+            strcat(result_str, argv[i]);
         }
     }
 
     // Print each integer stored in intArray, each on a new line
-    for (int i = 0; i < intCount; i++) {
-        printf("%d\n", intArray[i]);
+    for (int i = 0; i < int_count; i++) {
+        printf("%d\n", integers[i]);
     }
 
     // Print the combined string of non-integer arguments
-    printf("%s\n", combinedString);
+    printf("%s\n", result_str);
 
     return 0;
-}
+} 
